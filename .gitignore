@@ -103,5 +103,5 @@ dist
 # TernJS port file
 .tern-port
 
-#Cloud9
+# Cloud nine files
 .c9/
