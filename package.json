@@ -1,0 +1,22 @@
+{
+  "name": "environment",
+  "version": "1.0.0",
+  "description": "blenderDev",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/engdavide/blenderDev.git"
+  },
+  "keywords": [
+    "gcsm"
+  ],
+  "author": "David Eng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/engdavide/blenderDev/issues"
+  },
+  "homepage": "https://github.com/engdavide/blenderDev#readme"
+}
