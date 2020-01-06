@@ -44,7 +44,7 @@ function pdf_base64(input, output){
         
 }
 
-app.post("/api/blender/results", (req, res) => {
+app.post("/api/blender/results", async (req, res) => {
 
         console.log("blender results");
         console.log(req.body);
@@ -57,7 +57,7 @@ app.post("/api/blender/results", (req, res) => {
         let inputFile = "public/" + filename;
         let outputFile = "public/output/" + newCtId + ".txt";
         
-        let base64String = pdf_base64(inputFile, outputFile);
+        let base64String = await pdf_base64(inputFile, outputFile);
         console.log("from route:")
         console.log(base64String)
         
