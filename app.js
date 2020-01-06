@@ -28,7 +28,20 @@ pdf2base64(inputFile)
     )
 
 app.post("/api/blender", function(req, res){
-    console.log("POST");
+    console.log("blender");
+    res.send(
+        {success: "true",
+        ftp_path: "/var/www/gcsm.dev/public",
+        ftp_host: "gcsm.dev",
+        expected_file: "nan"
+        }
+    );
+});
+
+app.post("/api/blender/results", function(req, res){
+    console.log("blend results");
+    var newData = req.body;
+    console.log("newDat: " & newData);
     res.send(
         {success: "true",
         ftp_path: "/var/www/gcsm.dev/public",
