@@ -20,7 +20,7 @@ app.post("/api/blender", function(req, res){
     );
 });
 
-async function pdf_base64(input, output){
+function pdf_base64(input, output){
         var outputString
         pdf2base64(input)
         .then(
@@ -42,8 +42,8 @@ async function pdf_base64(input, output){
         
 }
 
-app.post("/api/blender/results", async (req, res, next) => {
-    try {
+app.post("/api/blender/results", (req, res) => {
+
         console.log("blender results");
         console.log(req.body);
         var newData = JSON.parse(req.body.json_data);
@@ -55,11 +55,10 @@ app.post("/api/blender/results", async (req, res, next) => {
         let inputFile = "public/" + filename;
         let outputFile = "public/output/" + newCtId + ".txt";
         
-        let base64String = await pdf_base64(inputFile, outputFile);
-        
-        console.log("res send");
+        let base64String = pdf_base64(inputFile, outputFile);
         
         setTimeout(function() {
+            console.log("res send")
             res.send(
                 {ctId: newCtId,
                 soNumber: newData["soNumber"],
@@ -68,10 +67,7 @@ app.post("/api/blender/results", async (req, res, next) => {
             );
         }, 5000);
 
-    } catch (e) {
-        console.error(e);
-        return next(new Error('FTP server error'));
-    }
+
 });
 
 
