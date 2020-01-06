@@ -33,16 +33,17 @@ function pdf_base64(input, output){
                     });
                     console.log("from function:");
                     console.log(response);
+                    return response;
 
             }
         )
-        .then(
-            () => {
-                console.log("from function outer:");
-                console.log(outputString);
-                return outputString;
-            }
-        )
+        // .then(
+        //     () => {
+        //         console.log("from function outer:");
+        //         console.log(outputString);
+        //         return outputString;
+        //     }
+        // )
         .catch(
             (error) => {
                 console.log(error); //Exepection error....
