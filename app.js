@@ -7,25 +7,7 @@ const   express = require('express'),
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let inputFile = "public/CTtest.pdf"
-let outputFile = "public/output/jsonOut.txt"
 
-pdf2base64(inputFile)
-    .then(
-        (response) => {
-            // console.log(response); //cGF0aC90by9maWxlLmpwZw==
-            fs.writeFile(outputFile, 
-                response, (err) => {
-                    if(err) console.log(err);
-                    console.log("file write success");
-                });
-        }
-    )
-    .catch(
-        (error) => {
-            console.log(error); //Exepection error....
-        }
-    )
 
 app.post("/api/blender", function(req, res){
     console.log("blender");
@@ -46,10 +28,33 @@ app.post("/api/blender/results", function(req, res){
     var newCtId = newData["ctId"];
     let filename = newCtId + ".pdf";
     console.log(filename);
+    
+    
+    let inputFile = "public" + filename;
+    let outputFile = "public/output/filename.txt"
+    var outputString
+    
+    pdf2base64(inputFile)
+        .then(
+            (response) => {
+                outputString = response;
+                fs.writeFile(outputFile, 
+                    response, (err) => {
+                        if(err) console.log(err);
+                        console.log("file write success");
+                    });
+            }
+        )
+        .catch(
+            (error) => {
+                console.log(error); //Exepection error....
+            }
+        )
+    
     res.send(
         {ctId: newCtId,
         soNumber: newData["soNumber"],
-        pdfB64: "148hasdjnfd",
+        pdfB64: outputString,
         }
     );
 });
