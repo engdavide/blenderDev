@@ -41,13 +41,15 @@ app.post("/api/blender", function(req, res){
 app.post("/api/blender/results", function(req, res){
     console.log("blend results");
     console.log(req.body);
-    var newData = req.body;
-    console.log("newData: " & newData);
+    var newData = req.body.json_data;
+    var newCtId = req.body.json_data.ctId;
+    console.log(newData);
+    let filename = newCtId + ".pdf";
+    console.log(filename);
     res.send(
-        {success: "true",
-        ftp_path: "/var/www/gcsm.dev/public",
-        ftp_host: "gcsm.dev",
-        expected_file: "nan"
+        {ctId: newCtId,
+        soNumber: req.body.json_data.soNumber,
+        pdfB64: "148hasdjnfd",
         }
     );
 });
