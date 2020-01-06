@@ -25,6 +25,7 @@ function pdf_base64(input, output){
         pdf2base64(input)
         .then(
             (response) => {
+                outputString = response;
                 fs.writeFile(output, 
                     response, (err) => {
                         if(err) console.log(err);
@@ -32,8 +33,7 @@ function pdf_base64(input, output){
                     });
                     console.log("from function:");
                     console.log(response);
-                    //return response;
-                    return "123!"
+
             }
         )
         .catch(
@@ -41,6 +41,7 @@ function pdf_base64(input, output){
                 console.log(error); //Exepection error....
             }
         );
+        return outputString;
         
 }
 
