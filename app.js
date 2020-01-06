@@ -40,8 +40,9 @@ app.post("/api/blender", function(req, res){
 
 app.post("/api/blender/results", function(req, res){
     console.log("blend results");
+    console.log(req.body);
     var newData = req.body;
-    console.log("newDat: " & newData);
+    console.log("newData: " & newData);
     res.send(
         {success: "true",
         ftp_path: "/var/www/gcsm.dev/public",
