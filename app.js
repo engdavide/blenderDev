@@ -31,9 +31,9 @@ function pdf_base64(input, output){
                         if(err) console.log(err);
                         console.log("file write success");
                     });
-                    console.log("from function:")
-                    console.log(outputString)
-            return outputString;
+                    console.log("from function:");
+                    console.log(outputString);
+            return response;
             }
         )
         .catch(
