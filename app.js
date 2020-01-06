@@ -38,6 +38,35 @@ app.post("/api/blender", function(req, res){
     );
 });
 
+app.post("/api/blender/results", async (req, res) => {
+    console.log("blender results");
+    console.log(req.body);
+    var newData = JSON.parse(req.body.json_data);
+    console.log(newData);
+    var newCtId = newData["ctId"];
+    let filename = newCtId + ".pdf";
+    console.log(filename);
+
+    let inputFile = "public/" + filename;
+    let outputFile = "public/output/" + newCtId + ".txt";
+    
+    let base64String = await pdf_base64(inputFile, outputFile);
+    // console.log("from route:")
+    // console.log(base64String)
+
+    // console.log("res send")
+    res.send(
+        {ctId: newCtId,
+        soNumber: newData["soNumber"],
+        pdfB64: base64String,
+        }
+    );
+
+
+
+});
+
+
 async function pdf_base64(input, output){
     try {
         var outputString = await pdf2base64(input)
@@ -46,8 +75,8 @@ async function pdf_base64(input, output){
                 if(err) console.log(err);
                 console.log("file write success");
             });
-        console.log("from function:");
-        console.log(outputString);
+        // console.log("from function:");
+        // console.log(outputString);
         return outputString;
 
     } catch(e) {
@@ -55,37 +84,6 @@ async function pdf_base64(input, output){
     }
         
 }
-
-
-app.post("/api/blender/results", async (req, res) => {
-
-        console.log("blender results");
-        console.log(req.body);
-        var newData = JSON.parse(req.body.json_data);
-        console.log(newData);
-        var newCtId = newData["ctId"];
-        let filename = newCtId + ".pdf";
-        console.log(filename);
-
-        let inputFile = "public/" + filename;
-        let outputFile = "public/output/" + newCtId + ".txt";
-        
-        let base64String = await pdf_base64(inputFile, outputFile);
-        console.log("from route:")
-        console.log(base64String)
-        
-        
-        console.log("res send")
-        res.send(
-            {ctId: newCtId,
-            soNumber: newData["soNumber"],
-            pdfB64: base64String,
-            }
-        );
-
-
-
-});
 
 
 console.log("PORT: ", process.env.PORT);
