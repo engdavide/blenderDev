@@ -20,47 +20,53 @@ app.post("/api/blender", function(req, res){
     );
 });
 
-app.post("/api/blender/results", function(req, res){
-    console.log("blender results");
-    console.log(req.body);
-    var newData = JSON.parse(req.body.json_data);
-    console.log(newData);
-    var newCtId = newData["ctId"];
-    let filename = newCtId + ".pdf";
-    console.log(filename);
-    
-    
-    let inputFile = "public/" + filename;
-    let outputFile = "public/output/filename.txt"
-    var outputString
-    
-    pdf2base64(inputFile)
+async function pdf_base64(input, output){
+        var outputString
+        pdf2base64(input)
         .then(
             (response) => {
                 outputString = response;
-                fs.writeFile(outputFile, 
+                fs.writeFile(output, 
                     response, (err) => {
                         if(err) console.log(err);
                         console.log("file write success");
                     });
-            },
-                res.send(
-                    {ctId: newCtId,
-                    soNumber: newData["soNumber"],
-                    pdfB64: outputString,
-                    }
-                )
+            return outputString;
+            }
         )
         .catch(
             (error) => {
                 console.log(error); //Exepection error....
-            },
-                res.send(
-                    {Error: "FTP ERROR"
-                    }
-                )
-        )
+            }
+        );
+        
+}
 
+app.post("/api/blender/results", async (req, res, next) => {
+    try {
+        console.log("blender results");
+        console.log(req.body);
+        var newData = JSON.parse(req.body.json_data);
+        console.log(newData);
+        var newCtId = newData["ctId"];
+        let filename = newCtId + ".pdf";
+        console.log(filename);
+
+        let inputFile = "public/" + filename;
+        let outputFile = "public/output/" + newCtId + ".txt";
+        
+        let base64String = pdf_base64(inputFile, outputFile);
+
+        res.send(
+            {ctId: newCtId,
+            soNumber: newData["soNumber"],
+            pdfB64: base64String,
+            }
+        );
+    } catch (e) {
+        console.error(e);
+        return next(new Error('FTP server error'));
+    }
 });
 
 
