@@ -6,7 +6,25 @@ const   express = require('express'),
         
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
 
+var data = [
+    {entry: "test data point"}
+]
+
+app.get("/api/blender/view", function(req, res){
+    res.render("landing", {data: data})
+});
+
+app.post("/api/blender/view", function(req, res){
+    console.log("POST");
+    console.log(req);
+    console.log(req.body);
+    var newEntry = req.body.entry;
+    var newData = {entry: newEntry};
+    data.push(newData);
+    res.redirect("/");
+});
 
 
 app.post("/api/blender", function(req, res){
