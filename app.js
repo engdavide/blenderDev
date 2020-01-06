@@ -31,6 +31,8 @@ function pdf_base64(input, output){
                         if(err) console.log(err);
                         console.log("file write success");
                     });
+                    console.log("from function:")
+                    console.log(outputString)
             return outputString;
             }
         )
@@ -56,6 +58,9 @@ app.post("/api/blender/results", (req, res) => {
         let outputFile = "public/output/" + newCtId + ".txt";
         
         let base64String = pdf_base64(inputFile, outputFile);
+        console.log("from route:")
+        console.log(base64String)
+        
         
         setTimeout(function() {
             console.log("res send")
