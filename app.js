@@ -55,7 +55,7 @@ app.post("/api/blender/results", async (req, res, next) => {
         let inputFile = "public/" + filename;
         let outputFile = "public/output/" + newCtId + ".txt";
         
-        let base64String = pdf_base64(inputFile, outputFile).then(console.log("file complete"));
+        let base64String = await pdf_base64(inputFile, outputFile);
         
         console.log("res send");
         res.send(
