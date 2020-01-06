@@ -58,12 +58,16 @@ app.post("/api/blender/results", async (req, res, next) => {
         let base64String = await pdf_base64(inputFile, outputFile);
         
         console.log("res send");
-        res.send(
-            {ctId: newCtId,
-            soNumber: newData["soNumber"],
-            pdfB64: base64String,
-            }
-        );
+        
+        setTimeout(function() {
+            res.send(
+                {ctId: newCtId,
+                soNumber: newData["soNumber"],
+                pdfB64: base64String,
+                }
+            );
+        }, 250);
+
     } catch (e) {
         console.error(e);
         return next(new Error('FTP server error'));
