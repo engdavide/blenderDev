@@ -41,9 +41,9 @@ app.post("/api/blender", function(req, res){
 app.post("/api/blender/results", function(req, res){
     console.log("blender results");
     console.log(req.body);
-    var newData = req.body.json_data;
-    var newCtId = newData["ctId"];
+    var newData = JSON.parse(req.body.json_data);
     console.log(newData);
+    var newCtId = newData["ctId"];
     let filename = newCtId + ".pdf";
     console.log(filename);
     res.send(
