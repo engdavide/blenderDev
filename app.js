@@ -30,7 +30,7 @@ app.post("/api/blender/results", function(req, res){
     console.log(filename);
     
     
-    let inputFile = "public" + filename;
+    let inputFile = "public/" + filename;
     let outputFile = "public/output/filename.txt"
     var outputString
     
