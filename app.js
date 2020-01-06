@@ -43,20 +43,24 @@ app.post("/api/blender/results", function(req, res){
                         if(err) console.log(err);
                         console.log("file write success");
                     });
-            }
+            },
+                res.send(
+                    {ctId: newCtId,
+                    soNumber: newData["soNumber"],
+                    pdfB64: outputString,
+                    }
+                )
         )
         .catch(
             (error) => {
                 console.log(error); //Exepection error....
-            }
+            },
+                res.send(
+                    {Error: "FTP ERROR"
+                    }
+                )
         )
-    
-    res.send(
-        {ctId: newCtId,
-        soNumber: newData["soNumber"],
-        pdfB64: outputString,
-        }
-    );
+
 });
 
 
