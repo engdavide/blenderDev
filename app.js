@@ -20,38 +20,24 @@ app.post("/api/blender", function(req, res){
     );
 });
 
-function pdf_base64(input, output){
-        var outputString
-        pdf2base64(input)
-        .then(
-            (response) => {
-                outputString = response;
-                fs.writeFile(output, 
-                    response, (err) => {
-                        if(err) console.log(err);
-                        console.log("file write success");
-                    });
-                    console.log("from function:");
-                    console.log(response);
-                    return response;
+async function pdf_base64(input, output){
+    try {
+        var outputString = await pdf2base64(input)
+        fs.writeFile(output, 
+            outputString, (err) => {
+                if(err) console.log(err);
+                console.log("file write success");
+            });
+        console.log("from function:");
+        console.log(outputString);
+        return outputString;
 
-            }
-        )
-        // .then(
-        //     () => {
-        //         console.log("from function outer:");
-        //         console.log(outputString);
-        //         return outputString;
-        //     }
-        // )
-        .catch(
-            (error) => {
-                console.log(error); //Exepection error....
-            }
-        );
-
+    } catch(e) {
+        console.log(e.message)
+    }
         
 }
+
 
 app.post("/api/blender/results", async (req, res) => {
 
@@ -71,15 +57,14 @@ app.post("/api/blender/results", async (req, res) => {
         console.log(base64String)
         
         
-        setTimeout(function() {
-            console.log("res send")
-            res.send(
-                {ctId: newCtId,
-                soNumber: newData["soNumber"],
-                pdfB64: base64String,
-                }
-            );
-        }, 5000);
+        console.log("res send")
+        res.send(
+            {ctId: newCtId,
+            soNumber: newData["soNumber"],
+            pdfB64: base64String,
+            }
+        );
+
 
 
 });
