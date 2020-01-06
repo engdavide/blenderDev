@@ -42,13 +42,13 @@ app.post("/api/blender/results", function(req, res){
     console.log("blend results");
     console.log(req.body);
     var newData = req.body.json_data;
-    var newCtId = req.body.json_data['ctId'];
+    var newCtId = newData['ctId'];
     console.log(newData);
     let filename = newCtId + ".pdf";
     console.log(filename);
     res.send(
         {ctId: newCtId,
-        soNumber: req.body.json_data['soNumber'],
+        soNumber: newData['soNumber'],
         pdfB64: "148hasdjnfd",
         }
     );
