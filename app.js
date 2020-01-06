@@ -21,7 +21,9 @@ app.post("/api/blender/view", function(req, res){
     var newEntry = req.body.json_data;
     var newData = {entry: newEntry};
     data.push(newData);
-    res.redirect("/");
+    res.send(
+        {success: "true"}
+    );
 });
 
 
