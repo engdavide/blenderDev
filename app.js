@@ -5,7 +5,7 @@ const   express = require('express'),
         
         
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 app.set("view engine", "ejs");
 
 var data = [
