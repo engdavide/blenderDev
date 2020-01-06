@@ -66,7 +66,7 @@ app.post("/api/blender/results", async (req, res, next) => {
                 pdfB64: base64String,
                 }
             );
-        }, 250);
+        }, 5000);
 
     } catch (e) {
         console.error(e);
