@@ -27,6 +27,18 @@ pdf2base64(inputFile)
         }
     )
 
+app.post("/new", function(req, res){
+    console.log("POST");
+
+    res.send(
+        {success: "true",
+        ftp_path: "",
+        ftp_host: "gcsm.dev",
+        expected_file: "nan"
+        }
+    );
+});
+
 
 console.log("PORT: ", process.env.PORT);
 console.log("IP: ", process.env.IP);
