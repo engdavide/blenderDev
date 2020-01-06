@@ -27,9 +27,8 @@ pdf2base64(inputFile)
         }
     )
 
-app.post("/new", function(req, res){
+app.post("/api/blender", function(req, res){
     console.log("POST");
-
     res.send(
         {success: "true",
         ftp_path: "",
