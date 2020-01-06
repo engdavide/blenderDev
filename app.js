@@ -41,6 +41,8 @@ function pdf_base64(input, output){
                 console.log(error); //Exepection error....
             }
         );
+        console.log("from function outer:");
+        console.log(outputString);
         return outputString;
         
 }
