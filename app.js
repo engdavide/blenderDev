@@ -31,7 +31,7 @@ app.post("/api/blender", function(req, res){
     console.log("POST");
     res.send(
         {success: "true",
-        ftp_path: "",
+        ftp_path: "/ftpuser",
         ftp_host: "gcsm.dev",
         expected_file: "nan"
         }
