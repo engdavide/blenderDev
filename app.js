@@ -21,6 +21,7 @@ app.get("/api/blender/view", function(req, res){
 
 app.post("/api/blender/view", function(req, res){
     console.log("POST");
+    console.log(req.body.json_data);
     var newEntry = JSON.parse(req.body.json_data);
     let newCtId = newEntry["ctId"];
     let filename = newCtId + "-decoded.pdf";
