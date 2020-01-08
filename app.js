@@ -24,11 +24,11 @@ app.post("/api/blender/view", function(req, res){
     let newCtId = newEntry["ctId"];
     let filename = newCtId + "-decoded.pdf";
     let filepath = "./public/output/"
-    fs.writeFile(filepath + filename, newEntry.pdfB64, {encoding: 'base64'} , (err) => {
-        if (err) throw err;
-        console.log('converted file saved!');
-    });
-    var anchorLink = '<a href=/static/' + filename + '>re-converted PDF</a>';
+    
+    let base64Buff = new Buffer(newEntry.pdfB64, 'base64')
+    fs.writeFileSync(filepath + filename, base64Buff);
+    
+    var anchorLink = '<a href=\"/static/' + filename + '\">re-converted PDF</a>';
     var newLink = {entry: anchorLink};
     var newData = {entry: JSON.stringify(newEntry)};
     data.push(newLink, newData);
@@ -36,6 +36,8 @@ app.post("/api/blender/view", function(req, res){
         {success: "true"}
     );
 });
+
+
 
 
 app.post("/api/blender", function(req, res){
@@ -49,7 +51,8 @@ app.post("/api/blender", function(req, res){
     );
 });
 
-app.post("/api/blender/results", async (req, res) => {
+
+app.post("/api/blender/results", (req, res) => {
     console.log("blender results");
     console.log(req.body);
     var newData = JSON.parse(req.body.json_data);
@@ -61,40 +64,69 @@ app.post("/api/blender/results", async (req, res) => {
     let inputFile = "public/" + filename;
     let outputFile = "public/output/" + newCtId + ".txt";
     
-    let base64String = await pdf_base64(inputFile, outputFile);
-    // console.log("from route:")
-    // console.log(base64String)
+    let base64Buff = new Buffer(fs.readFileSync(inputFile)).toString('base64')
+    fs.writeFileSync(outputFile, base64Buff);
 
-    // console.log("res send")
     res.send(
         {ctId: newCtId,
         soNumber: newData["soNumber"],
-        pdfB64: base64String,
+        pdfB64: base64Buff,
         }
     );
-
-
-
 });
 
 
-async function pdf_base64(input, output){
-    try {
-        var outputString = await pdf2base64(input)
-        fs.writeFile(output, 
-            outputString, (err) => {
-                if(err) console.log(err);
-                console.log("file write success");
-            });
-        // console.log("from function:");
-        // console.log(outputString);
-        return outputString;
 
-    } catch(e) {
-        console.log(e.message)
-    }
+
+
+
+
+// app.post("/api/blender/results", async (req, res) => {
+//     console.log("blender results");
+//     console.log(req.body);
+//     var newData = JSON.parse(req.body.json_data);
+//     console.log(newData);
+//     var newCtId = newData["ctId"];
+//     let filename = newCtId + ".pdf";
+//     console.log(filename);
+
+//     let inputFile = "public/" + filename;
+//     let outputFile = "public/output/" + newCtId + ".txt";
+    
+//     let base64String = await pdf_base64(inputFile, outputFile);
+//     // console.log("from route:")
+//     // console.log(base64String)
+
+//     // console.log("res send")
+//     res.send(
+//         {ctId: newCtId,
+//         soNumber: newData["soNumber"],
+//         pdfB64: base64String,
+//         }
+//     );
+
+
+
+// });
+
+
+// async function pdf_base64(input, output){
+//     try {
+//         var outputString = await pdf2base64(input)
+//         fs.writeFile(output, 
+//             outputString, (err) => {
+//                 if(err) console.log(err);
+//                 console.log("file write success");
+//             });
+//         // console.log("from function:");
+//         // console.log(outputString);
+//         return outputString;
+
+//     } catch(e) {
+//         console.log(e.message)
+//     }
         
-}
+// }
 
 
 console.log("PORT: ", process.env.PORT);
