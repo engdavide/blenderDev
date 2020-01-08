@@ -26,9 +26,7 @@ app.post("/api/blender/view", function(req, res){
     let filename = newCtId + "-decoded.pdf";
     let filepath = "./public/output/"
     
-    let base64Buff = new Buffer(newEntry.pdfB64, 'base64').replace(/-/g, '+').replace(/_/g, '/');
-    while (base64Buff.length % 4)
-        base64Buff += '=';
+    let base64Buff = urlDecode(new Buffer(newEntry.pdfB64, 'base64'));
     fs.writeFileSync(filepath + filename, base64Buff);
     
     var anchorLink = '<a href=\"/static/' + filename + '\">re-converted PDF</a>';
@@ -68,7 +66,7 @@ app.post("/api/blender/results", (req, res) => {
     let inputFile = "public/" + filename;
     let outputFile = "public/output/" + newCtId + ".txt";
     
-    let base64Buff = new Buffer(fs.readFileSync(inputFile)).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    let base64Buff = urlEncode(new Buffer(fs.readFileSync(inputFile)).toString('base64'));
     fs.writeFileSync(outputFile, base64Buff);
 
     res.send(
@@ -81,6 +79,19 @@ app.post("/api/blender/results", (req, res) => {
 
 
 
+
+
+
+function urlEncode (unencoded) {
+  return unencoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};
+
+function urlDecode (encoded) {
+  encoded = encoded.replace(/-/g, '+').replace(/_/g, '/');
+  while (encoded.length % 4)
+    encoded += '=';
+  return encoded;
+};
 
 
 
