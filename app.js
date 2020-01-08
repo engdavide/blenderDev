@@ -2,6 +2,7 @@ const   express = require('express'),
         bodyParser = require('body-parser'),
         fs = require('fs'),
         pdf2base64 = require('pdf-to-base64'),
+        base64url = require('base64-url'),
         path = require('path');
         
         
@@ -64,7 +65,8 @@ app.post("/api/blender/results", (req, res) => {
     let inputFile = "public/" + filename;
     let outputFile = "public/output/" + newCtId + ".txt";
     
-    let base64Buff = new Buffer(fs.readFileSync(inputFile)).toString('base64')
+    let base64Buff = new Buffer(fs.readFileSync(inputFile)).toString('base64');
+    base64Buff = base64url.encode(base64Buff);
     fs.writeFileSync(outputFile, base64Buff);
 
     res.send(
