@@ -21,7 +21,7 @@ app.post("/api/blender/view", function(req, res){
     var newEntry = JSON.parse(req.body.json_data);
     let newCtId = newEntry["ctId"];
     let filename = newCtId + "-decoded.pdf";
-    let filepath = "/public/output/"
+    let filepath = "./public/output/"
     fs.writeFile(filepath + filename, newEntry.pdfB64, {encoding: 'base64'} , (err) => {
         if (err) throw err;
         console.log('converted file saved!');
