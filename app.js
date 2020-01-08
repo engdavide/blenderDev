@@ -21,7 +21,6 @@ app.get("/api/blender/view", function(req, res){
 
 app.post("/api/blender/view", function(req, res){
     console.log("POST");
-    console.log(req.body.json_data);
     var newEntry = JSON.parse(req.body.json_data);
     let newCtId = newEntry["ctId"];
     let filename = newCtId + "-decoded.pdf";
@@ -66,14 +65,13 @@ app.post("/api/blender/results", (req, res) => {
     let inputFile = "public/" + filename;
     let outputFile = "public/output/" + newCtId + ".txt";
     
-    let base64Str = fs.readFileSync(inputFile).toString('base64');
-    let base64Url = base64url.encode(base64Str);
-    fs.writeFileSync(outputFile, base64Url);
+    let base64Buff = new Buffer(fs.readFileSync(inputFile)).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    fs.writeFileSync(outputFile, base64Buff);
 
     res.send(
         {ctId: newCtId,
         soNumber: newData["soNumber"],
-        pdfB64: base64Url,
+        pdfB64: base64Buff,
         }
     );
 });
