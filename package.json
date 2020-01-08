@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/engdavide/blenderDev#readme",
   "dependencies": {
+    "base64topdf": "^1.1.8",
     "body-parser": "^1.19.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
