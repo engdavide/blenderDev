@@ -1,12 +1,13 @@
 const   express = require('express'),
         bodyParser = require('body-parser'),
         fs = require('fs'),
-        pdf2base64 = require('pdf-to-base64');
+        pdf2base64 = require('pdf-to-base64'),
+        path = require('path');
         
         
 const app = express();
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
-app.use(express.static('public'));
+app.use('/static', express.static(path.join(__dirname, 'public/output')))
 app.set("view engine", "ejs");
 
 var data = [
@@ -27,7 +28,8 @@ app.post("/api/blender/view", function(req, res){
         if (err) throw err;
         console.log('converted file saved!');
     });
-    var newLink = {entry: filepath + filename};
+    var anchorLink = '<a href=/static' + filename
+    var newLink = {entry: anchorLink};
     var newData = {entry: JSON.stringify(newEntry)};
     data.push(newLink, newData);
     res.send(
