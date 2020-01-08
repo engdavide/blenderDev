@@ -26,7 +26,7 @@ app.post("/api/blender/view", function(req, res){
     let filename = newCtId + "-decoded.pdf";
     let filepath = "./public/output/"
     
-    let base64Buff = urlDecode(new Buffer(newEntry.pdfB64, 'base64'));
+    let base64Buff = urlDecode(new Buffer(newEntry.pdfB64, 'base64').toString('utf8'));
     fs.writeFileSync(filepath + filename, base64Buff);
     
     var anchorLink = '<a href=\"/static/' + filename + '\">re-converted PDF</a>';
