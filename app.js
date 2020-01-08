@@ -28,7 +28,7 @@ app.post("/api/blender/view", function(req, res){
         if (err) throw err;
         console.log('converted file saved!');
     });
-    var anchorLink = '<a href=/static' + filename
+    var anchorLink = '<a href=/static/' + filename + '>re-converted PDF</a>';
     var newLink = {entry: anchorLink};
     var newData = {entry: JSON.stringify(newEntry)};
     data.push(newLink, newData);
