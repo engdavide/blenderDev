@@ -66,14 +66,14 @@ app.post("/api/blender/results", (req, res) => {
     let inputFile = "public/" + filename;
     let outputFile = "public/output/" + newCtId + ".txt";
     
-    let base64Buff = new Buffer(fs.readFileSync(inputFile)).toString('base64');
-    base64Buff = base64url.encode(base64Buff);
-    fs.writeFileSync(outputFile, base64Buff);
+    let base64Str = fs.readFileSync(inputFile).toString('base64');
+    let base64Url = base64url.encode(base64Str);
+    fs.writeFileSync(outputFile, base64Url);
 
     res.send(
         {ctId: newCtId,
         soNumber: newData["soNumber"],
-        pdfB64: base64Buff,
+        pdfB64: base64Url,
         }
     );
 });
