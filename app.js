@@ -1,8 +1,7 @@
 const   express = require('express'),
         bodyParser = require('body-parser'),
         fs = require('fs'),
-        pdf2base64 = require('pdf-to-base64'),
-        base64 = require('base64topdf');
+        pdf2base64 = require('pdf-to-base64');
         
         
 const app = express();
@@ -23,8 +22,7 @@ app.post("/api/blender/view", function(req, res){
     let newCtId = newEntry["ctId"];
     let filename = newCtId + "-decoded.pdf";
     let filepath = "/public/output/"
-    let decodedBase64 = base64.base64Decode('newEntry.pdfB64', filename);
-    fs.writeFile(filepath + filename, decodedBase64, (err) => {
+    fs.writeFile(filepath + filename, newEntry.pdfB64, {encoding: 'base64'} , (err) => {
         if (err) throw err;
         console.log('converted file saved!');
     });
