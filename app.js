@@ -4,7 +4,8 @@ const   express = require('express'),
         pdf2base64 = require('pdf-to-base64'),
         base64url = require('base64-url'),
         path = require('path');
-        
+
+const   base64 = require('./base64.js');        
         
 const app = express();
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
@@ -26,7 +27,9 @@ app.post("/api/blender/view", function(req, res){
     let filename = newCtId + "-decoded.pdf";
     let filepath = "./public/output/"
     
-    let base64Buff = new Buffer(newEntry.pdfB64, 'base64');
+    //let base64Buff = new Buffer(newEntry.pdfB64, 'base64');
+    let base64String = newEntry.pdfB64.toString('base64')
+    let base64Buff = base64.urldecode(base64String)
     fs.writeFileSync(filepath + filename, base64Buff);
     
     var anchorLink = '<a href=\"/static/' + filename + '\">re-converted PDF</a>';
@@ -66,9 +69,12 @@ app.post("/api/blender/results", (req, res) => {
     let inputFile = "public/" + filename;
     let outputFile = "public/output/" + newCtId + ".txt";
     
-    let base64Buff = urlEncode(new Buffer(fs.readFileSync(inputFile)).toString('base64'));
+    let base64String = fs.readFileSync(inputFile).toString('base64')
+    let base64Buff = base64.urlencode(base64String)
     fs.writeFileSync(outputFile, base64Buff);
-
+    
+    // let base64Buff = urlEncode(new Buffer(fs.readFileSync(inputFile)).toString('base64'));
+    
     res.send(
         {ctId: newCtId,
         soNumber: newData["soNumber"],
