@@ -1,12 +1,21 @@
-<h1>data view page</h1>
+<html>
+    <head>
+        <title>Custom Trim View Page</title>
+    </head>
+    
+    <body>
+        <h1>data view page</h1>
+        
+        
+        <ul>
+            <% data.forEach(function(datum) { %>
+                <% if(datum.entry.includes("static")){ %>
+                    <li><a href="<%= datum.entry %>">Re-converted PDF file</a></li>
+                <% }else{ %>
+                    <li><%= datum.entry %></li>
+                <% } %>
+            <% }); %>
+        </ul>
+    </body>
 
-
-<ul>
-    <% data.forEach(function(datum) { %>
-        <% if(datum.entry.includes("static")){ %>
-            <li><a href="<%= datum.entry %>">Re-converted PDF file</a></li>
-        <% }else{ %>
-            <li><%= datum.entry %></li>
-        <% } %>
-    <% }); %>
-</ul>
+</html>
