@@ -21,12 +21,12 @@ app.set("view engine", "ejs");
         console.log('file conversion complete');
     }
     
-    // convert to base64 encoded string
-    var base64str = base64_encode('test.pdf');
-    fs.writeFileSync('testB64.txt', base64str);
-    // convert base64 string back to file
-    let base64StrRead = fs.readFileSync('testB64.txt').toString();
-    base64_decode(base64StrRead, 'testDecoded.pdf');
+    // // convert to base64 encoded string
+    // var base64str = base64_encode('test.pdf');
+    // fs.writeFileSync('testB64.txt', base64str);
+    // // convert base64 string back to file
+    // let base64StrRead = fs.readFileSync('testB64.txt').toString();
+    // base64_decode(base64StrRead, 'testDecoded.pdf');
 
 
 var data = [
