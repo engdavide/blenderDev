@@ -1,16 +1,33 @@
 const   express = require('express'),
         bodyParser = require('body-parser'),
         fs = require('fs'),
-        pdf2base64 = require('pdf-to-base64'),
-        base64url = require('base64-url'),
         path = require('path');
 
-const   base64 = require('./base64.js');        
-        
 const app = express();
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 app.use('/static', express.static(path.join(__dirname, 'public/output')))
 app.set("view engine", "ejs");
+
+//Test runs...FULL
+
+    function base64_encode(file) {
+        var bitmap = fs.readFileSync(file);
+        return new Buffer(bitmap).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+    
+    function base64_decode(base64str, file) {
+        var bitmap = new Buffer(base64str, 'base64')
+        fs.writeFileSync(file, bitmap);
+        console.log('file conversion complete');
+    }
+    
+    // convert to base64 encoded string
+    var base64str = base64_encode('test.pdf');
+    fs.writeFileSync('testB64.txt', base64str);
+    // convert base64 string back to file
+    let base64StrRead = fs.readFileSync('testB64.txt').toString();
+    base64_decode(base64StrRead, 'testDecoded.pdf');
+
 
 var data = [
     {entry: "test data point"}
@@ -26,15 +43,13 @@ app.post("/api/blender/view", function(req, res){
     let newCtId = newEntry["ctId"];
     let filename = newCtId + "-decoded.pdf";
     let filepath = "./public/output/"
-    
-    //let base64Buff = new Buffer(newEntry.pdfB64, 'base64');
-    let base64String = newEntry.pdfB64.toString('base64')
-    let base64Buff = base64.urlDecode(base64String)
-    fs.writeFileSync(filepath + filename, base64Buff);
+
+    let base64StrRead = fs.readFileSync('testB64.txt').toString();
+    base64_decode(base64StrRead, filepath + filename);
     
     var anchorLink = '<a href=\"/static/' + filename + '\">re-converted PDF</a>';
     var newLink = {entry: anchorLink};
-    newEntry.pdfB64 = base64Buff.toString('base64');
+    newEntry.pdfB64 = base64StrRead;
     var newData = {entry: JSON.stringify(newEntry)};
     data.push(newLink, newData);
     res.send(
@@ -69,85 +84,20 @@ app.post("/api/blender/results", (req, res) => {
     let inputFile = "public/" + filename;
     let outputFile = "public/output/" + newCtId + ".txt";
     
-    let base64String = fs.readFileSync(inputFile).toString('base64')
-    let base64Buff = base64.urlEncode(base64String)
-    fs.writeFileSync(outputFile, base64Buff);
+    var base64Str = base64_encode(inputFile);
+    fs.writeFileSync(outputFile, base64str);
     
     // let base64Buff = urlEncode(new Buffer(fs.readFileSync(inputFile)).toString('base64'));
     
     res.send(
         {ctId: newCtId,
         soNumber: newData["soNumber"],
-        pdfB64: base64Buff,
+        pdfB64: base64Str,
         }
     );
 });
 
 
-
-
-
-
-function urlEncode (unencoded) {
-  return unencoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-};
-
-function urlDecode (encoded) {
-  encoded = encoded.replace(/-/g, '+').replace(/_/g, '/');
-  while (encoded.length % 4)
-    encoded += '=';
-  return encoded;
-};
-
-
-
-
-// app.post("/api/blender/results", async (req, res) => {
-//     console.log("blender results");
-//     console.log(req.body);
-//     var newData = JSON.parse(req.body.json_data);
-//     console.log(newData);
-//     var newCtId = newData["ctId"];
-//     let filename = newCtId + ".pdf";
-//     console.log(filename);
-
-//     let inputFile = "public/" + filename;
-//     let outputFile = "public/output/" + newCtId + ".txt";
-    
-//     let base64String = await pdf_base64(inputFile, outputFile);
-//     // console.log("from route:")
-//     // console.log(base64String)
-
-//     // console.log("res send")
-//     res.send(
-//         {ctId: newCtId,
-//         soNumber: newData["soNumber"],
-//         pdfB64: base64String,
-//         }
-//     );
-
-
-
-// });
-
-
-// async function pdf_base64(input, output){
-//     try {
-//         var outputString = await pdf2base64(input)
-//         fs.writeFile(output, 
-//             outputString, (err) => {
-//                 if(err) console.log(err);
-//                 console.log("file write success");
-//             });
-//         // console.log("from function:");
-//         // console.log(outputString);
-//         return outputString;
-
-//     } catch(e) {
-//         console.log(e.message)
-//     }
-        
-// }
 
 
 console.log("PORT: ", process.env.PORT);
