@@ -29,7 +29,7 @@ app.post("/api/blender/view", function(req, res){
     
     //let base64Buff = new Buffer(newEntry.pdfB64, 'base64');
     let base64String = newEntry.pdfB64.toString('base64')
-    let base64Buff = base64.urldecode(base64String)
+    let base64Buff = base64.urlDecode(base64String)
     fs.writeFileSync(filepath + filename, base64Buff);
     
     var anchorLink = '<a href=\"/static/' + filename + '\">re-converted PDF</a>';
@@ -70,7 +70,7 @@ app.post("/api/blender/results", (req, res) => {
     let outputFile = "public/output/" + newCtId + ".txt";
     
     let base64String = fs.readFileSync(inputFile).toString('base64')
-    let base64Buff = base64.urlencode(base64String)
+    let base64Buff = base64.urlEncode(base64String)
     fs.writeFileSync(outputFile, base64Buff);
     
     // let base64Buff = urlEncode(new Buffer(fs.readFileSync(inputFile)).toString('base64'));
