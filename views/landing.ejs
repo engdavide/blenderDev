@@ -3,6 +3,9 @@
 
 <ul>
     <% data.forEach(function(datum) { %>
-        <p><%= datum.entry %></p>
+        <% if(datum.includes("static")){ %>
+            <li><a href="<%= datum.entry %>">Re-converted PDF file</a></li>
+        <% }else{ %>
+            <li><%= datum.entry %></li>
     <% }); %>
 </ul>
