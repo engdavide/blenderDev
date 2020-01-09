@@ -85,7 +85,7 @@ app.post("/api/blender/results", (req, res) => {
     let outputFile = "public/output/" + newCtId + ".txt";
     
     var base64Str = base64_encode(inputFile);
-    fs.writeFileSync(outputFile, base64str);
+    fs.writeFileSync(outputFile, base64Str);
     
     // let base64Buff = urlEncode(new Buffer(fs.readFileSync(inputFile)).toString('base64'));
     
